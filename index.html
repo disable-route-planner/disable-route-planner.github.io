@@ -244,6 +244,15 @@ button:focus-visible,label:focus-visible,input:focus-visible{outline:3px solid v
 .tog input:checked{background:var(--accent)}
 .tog input:checked::before{transform:translateX(20px)}
 .tog input:disabled{opacity:.5;cursor:not-allowed}
+/* ---------- verified places (sponsored) ---------- */
+.spon{display:inline-block;margin-left:8px;padding:2px 8px;border-radius:999px;background:var(--press);color:var(--muted);font-size:12px;font-weight:700;vertical-align:2px}
+.vfacts{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 16px}
+.vfacts .fact{background:var(--ok-soft);color:var(--ok)}
+.offer{display:grid;grid-template-columns:48px 1fr auto;align-items:center;gap:2px 12px;width:100%;padding:12px 14px 12px 12px;margin:-4px 0 12px;border-radius:18px;background:var(--press);text-align:left}
+.offer .alert-ic{grid-row:1/3;background:var(--accent-soft);color:var(--accent)}
+.offer b{font-size:16px}
+.offer span{color:var(--muted);font-size:14px;font-weight:600}
+.offer .go{grid-row:1/3;grid-column:3;font-weight:800;color:var(--accent);font-size:15px}
 </style>
 
 <div class="stage"><div class="device">
@@ -320,6 +329,7 @@ button:focus-visible,label:focus-visible,input:focus-visible{outline:3px solid v
         <div class="alert-ic" style="background:var(--ok-soft);color:var(--ok)"><svg width="26" height="26" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m6 13.5 4.5 4.5L20 8"/></svg></div>
         <div><h3>Liberty</h3><p class="num" id="done-text"></p></div>
       </div>
+      <button class="offer" id="done-offer"></button>
       <button class="primary" id="again">Done</button>
     </div>
 
@@ -330,6 +340,8 @@ button:focus-visible,label:focus-visible,input:focus-visible{outline:3px solid v
         <div class="alert-ic" id="dt-ic"></div>
         <div><h3 id="dt-t"></h3><p id="dt-s"></p><div class="who" id="dt-w"></div></div>
       </div>
+      <div class="vfacts" id="dt-facts" hidden></div>
+      <div class="row2" id="dt-ad" hidden><button class="secondary" id="dt-ad-close">Close</button><button class="primary" id="dt-offer"></button></div>
       <div class="row2" id="dt-issue"><button class="secondary" id="dt-clear">Cleared</button><button class="primary" id="dt-still">Still there</button></div>
       <button class="secondary" id="dt-close">Close</button>
     </div>
@@ -439,6 +451,8 @@ const ICON={
   nostep:'<path d="M4 23h5v-5h5v-5h5V8h5"/><path d="M5 5l18 18"/>',
   unk:'<path d="M10 10.5a4 4 0 1 1 5.6 3.7c-1 .5-1.6 1.3-1.6 2.6v.7"/><path d="M14 21.6v.2"/>',
   check:'<path d="m6 14.5 5 5L22 8.5"/>',
+  cup:'<path d="M5 10h15v6a6 6 0 0 1-6 6h-3a6 6 0 0 1-6-6z"/><path d="M20 12h1.5a3 3 0 0 1 0 6H19M10 3.5v3M14.5 3.5v3"/>',
+  tag:'<path d="M4 4h10l10 10-10 10L4 14z"/><circle cx="9.5" cy="9.5" r="1.8" fill="currentColor"/>',
   spk:'<path d="M4 11v6h4l6 5V6l-6 5z"/><path d="M18 10.5a4.5 4.5 0 0 1 0 7M21 7.5a9 9 0 0 1 0 13"/>',
   spkoff:'<path d="M4 11v6h4l6 5V6l-6 5z"/><path d="M18 11l6 6M24 11l-6 6"/>'
 };
@@ -513,6 +527,15 @@ const PLACES=[
 const P={};
 const NEAR=['car','rough','works','narrow','xslope'];
 PLACES.forEach(([p,k,c,t,s,w,issue])=>{if(p)P[k]=hazPin(p[0],p[1],k,c,{t,s,w,issue},false,15,NEAR.includes(k)?nearG:pins)});
+// verified places: venues pay to be shown, only after app users have measured the way in (demo data, fictional venues)
+const VENUES=[
+  {at:nudge(lbx('Ganton Street'),0,-18),t:'Hearth & Grain',s:'Café · Ganton St',mins:2,offer:'10% off',
+   facts:[['nostep','Step-free entrance'],['check','Accessible toilet'],['narrow','Door 95 cm']],w:'Measured by 9 wheelchair users this month'},
+  {at:nudge(lbx('Great Pulteney Street'),0,-10),t:'Pulteney Books',s:'Bookshop · Great Pulteney St',mins:4,offer:'Free coffee',
+   facts:[['nostep','Step-free entrance'],['slope','Level floor'],['narrow','Aisles 1.2 m']],w:'Measured by 5 wheelchair users this month'}
+];
+const VPIN='<g><circle r="24" fill="transparent"/><circle class="dot" r="15" fill="var(--accent)" stroke="var(--surface)" stroke-width="3"/><g transform="translate(-9 -9) scale(.643)" fill="none" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">'+ICON.cup+'</g><circle cx="11" cy="-11" r="7" fill="var(--ok)" stroke="var(--surface)" stroke-width="2"/><path d="m7.8 -11 2.2 2.2 4-4" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></g>';
+VENUES.forEach(v=>{if(v.at)v.pin=pin(v.at[0],v.at[1],VPIN,{t:v.t,s:v.s,w:v.w,k:'cup',c:'var(--accent)',venue:v},nearG)});
 const me=pin(S[0],S[1],`<g><circle r="10" fill="var(--fg)" class="pulse"/><circle r="17" fill="var(--surface)" style="filter:drop-shadow(0 2px 4px rgba(0,0,0,.3))"/><path d="M0 -11 9 9 0 4 -9 9z" fill="var(--fg)" stroke="var(--fg)" stroke-width="2" stroke-linejoin="round"/></g>`);
 me.g.style.display='none';
 let blockPin=null;
@@ -715,12 +738,20 @@ function openDetail(p){
   if($('detail').hidden){dtPrev=SHEETS.find(x=>!$(x).hidden)||null;SHEETS.forEach(x=>show(x,0))}
   const ic=$('dt-ic');ic.innerHTML=glyph(i.k,26);ic.style.color=i.c;ic.style.background=`color-mix(in srgb, ${i.c} 15%, var(--surface))`;
   $('dt-t').textContent=i.t;$('dt-s').textContent=i.s;$('dt-w').textContent=i.w;
-  show('dt-issue',i.issue);show('dt-close',!i.issue);
+  const v=i.venue;
+  if(v){$('dt-t').insertAdjacentHTML('beforeend','<span class="spon">Sponsored</span>');
+    $('dt-facts').innerHTML=v.facts.map(([k,t])=>`<span class="fact">${glyph(k,15,2.8)}${t}</span>`).join('');
+    $('dt-offer').innerHTML=glyph('tag',20,2.4)+(v.saved?'Saved':v.offer)}
+  show('dt-facts',!!v);show('dt-ad',!!v);show('dt-issue',!v&&i.issue);show('dt-close',!v&&!i.issue);
   show('detail',1);chrome();
 }
 function closeDetail(){show('detail',0);if(dtPrev)show(dtPrev,1);dtPrev=dtPin=null;chrome()}
 function confirmed(){state.reports++;$('rep-count').textContent=12+state.reports}
-$('dt-x').onclick=closeDetail;$('dt-close').onclick=closeDetail;
+$('dt-x').onclick=closeDetail;$('dt-close').onclick=closeDetail;$('dt-ad-close').onclick=closeDetail;
+$('dt-offer').onclick=()=>{const v=dtPin.info.venue;v.saved=true;closeDetail();toast(`${v.offer} at ${v.t} saved`)};
+const V0=VENUES[0];
+$('done-offer').innerHTML=`<span class="alert-ic">${glyph('cup',26)}</span><b>${V0.t}<span class="spon">Sponsored</span></b><span>${V0.mins} min · step-free</span><span class="go">${V0.offer}</span>`;
+$('done-offer').onclick=()=>V0.pin&&openDetail(V0.pin);
 $('dt-still').onclick=()=>{const i=dtPin.info;i.w='Confirmed just now';confirmed();addFeed(i.t,'Still there · just now','queue','Confirmed',i.k,true);closeDetail();toast('Thanks, confirmed')};
 $('dt-clear').onclick=()=>{const p=dtPin,i=p.info;p.g.style.opacity=.35;i.w='Marked cleared just now';i.issue=false;confirmed();addFeed(i.t,'Cleared · just now','fixed','Cleared',i.k,true);closeDetail();toast('Marked as cleared')};
 $('liftchip').onclick=()=>P.lift&&openDetail(P.lift);
