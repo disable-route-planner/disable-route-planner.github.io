@@ -238,6 +238,16 @@ button:focus-visible,label:focus-visible,input:focus-visible{outline:3px solid v
 .tog{display:flex;align-items:center;gap:12px;min-height:58px;padding:0 16px;font-weight:600}
 .tog+.tog{border-top:1px solid var(--line)}
 .tog svg{color:var(--muted);flex:none}
+.seg2{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--surface);border-radius:18px;padding:6px;margin-top:-8px}
+.seg2 button{height:46px;border-radius:13px;font-weight:700;font-size:16px;color:var(--muted)}
+.seg2 button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent-deep)}
+:root[data-theme="dark"] .seg2 button[aria-pressed="true"]{color:var(--accent)}
+.m-crowd{fill:none;stroke:var(--bad);stroke-opacity:.2;stroke-width:38;stroke-linecap:round;stroke-linejoin:round}
+.mic{display:flex;align-items:center;gap:12px;width:100%;min-height:60px;padding:0 16px;margin-bottom:12px;border-radius:18px;background:var(--accent);color:var(--on-accent);font-size:17px;font-weight:700;text-align:left}
+.mic .ring{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--on-accent) 18%,transparent);flex:none}
+.mic.on .ring{animation:pulse2 1.1s ease-in-out infinite}
+.mic .heard{font-weight:500;font-size:15px;opacity:.9}
+@keyframes pulse2{50%{box-shadow:0 0 0 9px color-mix(in srgb,var(--on-accent) 22%,transparent)}}
 .tog span{flex:1}
 .tog input{appearance:none;-webkit-appearance:none;margin:0;width:52px;height:32px;border-radius:16px;background:var(--line);position:relative;flex:none;cursor:pointer;transition:background .2s}
 .tog input::before{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .2s}
@@ -371,6 +381,9 @@ button:focus-visible,label:focus-visible,input:focus-visible{outline:3px solid v
         <button aria-pressed="false" data-v="walking"><svg width="34" height="34" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="15" cy="5" r="2.6" fill="currentColor" stroke="none"/><path d="M14.5 10 12 19l4 4v7M14.5 10l4 6 5 1.5M12 19l-3 11M25 16.5V30"/></svg>Walking aid</button>
         <button aria-pressed="false" data-v="pushchair"><svg width="34" height="34" viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h3.5l3 8M11.5 16h17l-2.5 8h-12z"/><path d="M17 16V6a11 11 0 0 1 11 10"/><circle cx="14" cy="28" r="2.6"/><circle cx="25" cy="28" r="2.6"/></svg>Pushchair</button>
       </div>
+      <div class="seg2" id="drive"><button aria-pressed="true" data-v="manual">Self-propelled</button><button aria-pressed="false" data-v="powered">Powered</button></div>
+      <label class="field" for="width"><span class="hd"><span id="width-l">Chair width</span><output id="width-o" class="num">66 cm</output></span>
+        <input type="range" id="width" min="45" max="85" step="1" value="66"><span class="ends"><span>45</span><span>85 cm</span></span></label>
       <h2>Avoid</h2>
       <div class="toggles" id="avoid">
         <label class="tog"><svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 23h5v-5h5v-5h5V8h5"/></svg><span>Steps</span><input type="checkbox" data-k="steps"></label>
@@ -378,6 +391,7 @@ button:focus-visible,label:focus-visible,input:focus-visible{outline:3px solid v
         <label class="tog"><svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 18l4-5 3 3 4-7 3 5 4-5 6 9"/></svg><span>Rough or gravel surfaces</span><input type="checkbox" data-k="rough"></label>
         <label class="tog"><svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4v20M23 4v20M9 14h5M11.5 11 14 14l-2.5 3M19 14h-5M16.5 11 14 14l2.5 3"/></svg><span>Narrow pavements</span><input type="checkbox" data-k="narrow"></label>
         <label class="tog"><svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 15l22 6v3H3z"/><path d="M14 4v7M10.5 7.5 14 11l3.5-3.5"/></svg><span>Pavements that slope sideways</span><input type="checkbox" data-k="xslope"></label>
+        <label class="tog"><svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8.5" r="3.2"/><circle cx="19.5" cy="9.5" r="2.6"/><path d="M3.5 23v-1.5a6.5 6.5 0 0 1 13 0V23M17 16.3a5 5 0 0 1 7.5 4.3V23"/></svg><span>Crowded streets</span><input type="checkbox" data-k="crowd"></label>
       </div>
       <label class="field" for="kerb"><span class="hd">Highest kerb<output id="kerb-o" class="num">3 cm</output></span>
         <input type="range" id="kerb" min="0" max="10" step="0.5" value="3"><span class="ends"><span>0</span><span>10 cm</span></span></label>
@@ -392,6 +406,7 @@ button:focus-visible,label:focus-visible,input:focus-visible{outline:3px solid v
   <div class="sheet rep" id="report" hidden>
     <div class="grab"></div>
     <h2 id="rep-title">What's in the way?</h2>
+    <button class="mic" id="mic"><span class="ring"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><rect x="7" y="2" width="6" height="10" rx="3"/><path d="M4 9.5a6 6 0 0 0 12 0M10 15.5V18"/></svg></span><span id="mic-t">Say it</span></button>
     <div class="rgrid" id="rgrid"></div>
     <div class="photo" id="photo-step" hidden>
       <label class="shot" for="plate">Add a photo of the plate</label>
@@ -429,12 +444,15 @@ fitDevice();addEventListener('resize',fitDevice);
 
 /* ---------- profiles: kerb cm, slope %, range km, speed m/min (illustrative) ---------- */
 const PRESET={
-  wheelchair:{kerb:3,slope:8,range:6,speed:65,avoid:{steps:1,steep:1,rough:1,narrow:1,xslope:1},lock:['steps']},
-  scooter:{kerb:2,slope:6,range:25,speed:90,avoid:{steps:1,steep:1,rough:0,narrow:1,xslope:1},lock:['steps']},
-  walking:{kerb:10,slope:10,range:2,speed:48,avoid:{steps:0,steep:1,rough:1,narrow:0,xslope:1},lock:[]},
-  pushchair:{kerb:5,slope:10,range:5,speed:70,avoid:{steps:1,steep:0,rough:0,narrow:1,xslope:0},lock:[]}
+  wheelchair:{kerb:3,slope:6,range:3,speed:60,width:66,avoid:{steps:1,steep:1,rough:1,narrow:1,xslope:1,crowd:0},lock:['steps']},
+  scooter:{kerb:2,slope:6,range:25,speed:90,width:60,avoid:{steps:1,steep:1,rough:0,narrow:1,xslope:1,crowd:1},lock:['steps']},
+  walking:{kerb:10,slope:10,range:2,speed:48,width:60,avoid:{steps:0,steep:1,rough:1,narrow:0,xslope:1,crowd:1},lock:[]},
+  pushchair:{kerb:5,slope:10,range:5,speed:70,width:58,avoid:{steps:1,steep:0,rough:0,narrow:1,xslope:0,crowd:0},lock:[]}
 };
-const state={sel:'a',mode:'wheelchair',nav:false,rerouted:false,reports:0,sensing:true,kerb:3,slope:8,range:6,speed:65,avoid:{}};
+// self-propelled chairs tire on slopes and distance; powered chairs are wider and heavier (illustrative)
+const DRIVE={manual:{kerb:3,slope:6,range:3,speed:60,width:66},powered:{kerb:5,slope:10,range:20,speed:75,width:68}};
+const WIDTH_L={wheelchair:'Chair width',scooter:'Scooter width',walking:'Frame width',pushchair:'Pushchair width'};
+const state={sel:'a',mode:'wheelchair',drive:'manual',nav:false,rerouted:false,reports:0,sensing:true,kerb:3,slope:6,range:3,speed:60,width:66,avoid:{}};
 
 /* ---------- icons (28 x 28, stroked) ---------- */
 const ICON={
@@ -454,7 +472,9 @@ const ICON={
   cup:'<path d="M5 10h15v6a6 6 0 0 1-6 6h-3a6 6 0 0 1-6-6z"/><path d="M20 12h1.5a3 3 0 0 1 0 6H19M10 3.5v3M14.5 3.5v3"/>',
   tag:'<path d="M4 4h10l10 10-10 10L4 14z"/><circle cx="9.5" cy="9.5" r="1.8" fill="currentColor"/>',
   spk:'<path d="M4 11v6h4l6 5V6l-6 5z"/><path d="M18 10.5a4.5 4.5 0 0 1 0 7M21 7.5a9 9 0 0 1 0 13"/>',
-  spkoff:'<path d="M4 11v6h4l6 5V6l-6 5z"/><path d="M18 11l6 6M24 11l-6 6"/>'
+  spkoff:'<path d="M4 11v6h4l6 5V6l-6 5z"/><path d="M18 11l6 6M24 11l-6 6"/>',
+  crowd:'<circle cx="10" cy="8.5" r="3.2"/><circle cx="19.5" cy="9.5" r="2.6"/><path d="M3.5 23v-1.5a6.5 6.5 0 0 1 13 0V23M17 16.3a5 5 0 0 1 7.5 4.3V23"/>',
+  bike:'<circle cx="7" cy="19" r="4"/><circle cx="21" cy="19" r="4"/><path d="M7 19l4.5-9h6L21 19M11.5 10 10 6.5H7M17.5 10l2-4h3"/>'
 };
 const glyph=(k,s=24,w=2.4)=>`<svg width="${s}" height="${s}" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
 
@@ -474,6 +494,7 @@ el('path',{d:MAP.roads.major,class:'m-r m-major'},world);
 const lblG=el('g',{},world);
 const short=n=>n.replace(/ Street$/,' St').replace(/ Road$/,' Rd').replace(/ Place$/,' Pl').replace(/ Square$/,' Sq');
 const labels=MAP.labels.map(([n,x,y,a,maj])=>{const t=el('text',{class:'m-lbl'+(maj?' maj':''),x,y,transform:`rotate(${a} ${x} ${y})`},lblG);t.textContent=short(n);return t});
+const crowdG=el('g',{},world);
 const routeG=el('g',{},world);
 const altC=el('path',{class:'rt rt-alt-c'},routeG), altF=el('path',{class:'rt rt-alt'},routeG), altHit=el('path',{class:'rt rt-hit'},routeG);
 const mainC=el('path',{class:'rt rt-c'},routeG), mainF=el('path',{class:'rt rt-f'},routeG);
@@ -490,6 +511,9 @@ const proj=(la,lo)=>[(lo+0.1445)*K,(51.5185-la)*110540];
 const S=R.a[0], T=R.a[R.a.length-1];
 // illustrative survey data on route B: Hollen St not mapped yet, a short 5% ramp on Noel St
 const UNK=sub(R.b,326,386), STEEP=sub(R.b,400,448);
+// people density: anonymous counts from phones nearby (demo data). Oxford St busy along both routes, Carnaby St off-route
+const CROWD=sub(R.a,40,470);
+el('path',{d:d(CROWD),class:'m-crowd'},crowdG);
 const mid=p=>at(p,plen(p)/2);
 
 /* ---------- pins (drawn in screen pixels) ---------- */
@@ -517,16 +541,19 @@ const PLACES=[
   [MAP.hz.car,'car','var(--bad)','Car on pavement','Dean St · 1.1 m left to pass','38 people affected · with council',true],
   [lbx('Berwick Street'),'rough','var(--warn)','Rough surface','Broken paving, Berwick St','11 confirmed · 3 h ago',true],
   [nudge(lbx("D'Arblay Street"),34,0),'works','var(--bad)','Roadworks','Pavement closed, D’Arblay St','Confirmed 1 h ago',true],
-  [nudge(lbx('Ramillies Street'),0,-10),'narrow','var(--warn)','Narrow pavement','75 cm at the narrowest, Ramillies St','Measured 5 days ago',true],
+  [nudge(lbx('Ramillies Street'),0,-10),'narrow','var(--warn)','Narrow pavement','75 cm at the narrowest, Ramillies St','Measured 5 days ago',true,75],
   [nudge(lbx('Soho Square'),-20,-40),'xslope','var(--warn)','Pavement slopes sideways','4% cross-slope, Soho Square','Confirmed 2 days ago',true],
   [mid(STEEP),'slope','var(--warn)','Steep section','5% for 50 m, Noel St','Measured 6 days ago',false],
   [mid(UNK),'unk','#7d8a86','Not mapped yet','No kerb or surface data for 60 m of Hollen St','Filled in when someone passes with sensing on',false],
+  [at(R.a,300),'crowd','var(--bad)','Very busy now','Oxford St · about 3 people per m² outside the stores','Live count · 2 min ago · usually quieter after 19:00',false],
+  [nudge(lbx('Carnaby Street'),0,-14),'crowd','var(--warn)','Busy','Carnaby St · Christmas shoppers','Live count · 5 min ago',false],
+  [nudge(lbx('Wardour Street'),10,40),'bike','var(--bad)','Hire bikes on pavement','4 e-bikes across the pavement, Wardour St','2 reports · 20 min ago · sent to operator',true],
   [proj(51.5168,-0.1299),'lift','var(--ok)','Tottenham Court Road','Step-free from street to train, by lift','Lift working · checked 2 min ago',false],
   [proj(51.5152,-0.1418),'nostep','var(--bad)','Oxford Circus','No step-free access, stairs only','Nearest step-free station: Tottenham Court Road',false]
 ];
 const P={};
-const NEAR=['car','rough','works','narrow','xslope'];
-PLACES.forEach(([p,k,c,t,s,w,issue])=>{if(p)P[k]=hazPin(p[0],p[1],k,c,{t,s,w,issue},false,15,NEAR.includes(k)?nearG:pins)});
+const NEAR=['car','rough','works','narrow','xslope','bike'];
+PLACES.forEach(([p,k,c,t,s,w,issue,cm])=>{if(p&&!P[k])P[k]=hazPin(p[0],p[1],k,c,{t,s,w,issue,cm},false,15,NEAR.includes(k)?nearG:pins);else if(p)hazPin(p[0],p[1],k,c,{t,s,w,issue},false,15,nearG)});
 // verified places: venues pay to be shown, only after app users have measured the way in (demo data, fictional venues)
 const VENUES=[
   {at:nudge(lbx('Ganton Street'),0,-18),t:'Hearth & Grain',s:'Café · Ganton St',mins:2,offer:'10% off',
@@ -583,13 +610,18 @@ function chrome(){const v=visible();$('fab').style.bottom=(v.shH+14)+'px';$('loc
 const fmt=n=>String(+n);
 const mins=m=>Math.max(1,Math.round(m/state.speed));
 const clock=m=>{const t=NOW+m;return `${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}`};
+// narrowest clear pavement on each route (m); a chair needs its width plus ~15 cm to pass without scraping
+const NARROWEST={a:1.4,b:0.85};
+const fits=m=>m>=state.width/100+0.15;
 function options(){
-  const steepBad=!!state.avoid.steep&&5>state.slope, kerbOk=state.kerb>=5;
+  const steepBad=!!state.avoid.steep&&5>state.slope, kerbOk=state.kerb>=5, crowd=!!state.avoid.crowd;
+  const bFits=fits(NARROWEST.b);
   return [
-    {id:'a',len:plen(R.a),via:'Oxford St · Poland St',p:94,
-     facts:[['slope','2%','n'],['dropk','Kerbs dropped','ok'],['check','Checked 4 min ago','ok']]},
-    {id:'b',len:plen(R.b),via:'Hollen St · Noel St',p:Math.max(12,90-(kerbOk?6:46)-(steepBad?24:0)-8),
+    {id:'a',len:plen(R.a),via:'Oxford St · Poland St',p:crowd?68:94,
+     facts:[['slope','2%','n'],['crowd',crowd?'Busy 430 m':'Busy now',crowd?'bad':'warn'],['dropk','Kerbs dropped','ok']]},
+    {id:'b',len:plen(R.b),via:'Hollen St · Noel St',p:Math.max(12,90-(kerbOk?6:46)-(steepBad?24:0)-(bFits?0:30)-(crowd?6:0)-8),
      facts:[['slope',steepBad?`5% · max ${state.slope}%`:'5%',steepBad?'bad':'n'],
+            ['narrow',bFits?`${Math.round(NARROWEST.b*100)} cm min`:`${Math.round(NARROWEST.b*100)} cm · chair ${state.width}`,bFits?'n':'bad'],
             ['kerb',kerbOk?'5 cm kerb':`5 cm kerb · max ${fmt(state.kerb)}`,kerbOk?'warn':'bad'],
             ['unk','60 m unknown','unk']]}
   ];
@@ -738,6 +770,7 @@ function openDetail(p){
   if($('detail').hidden){dtPrev=SHEETS.find(x=>!$(x).hidden)||null;SHEETS.forEach(x=>show(x,0))}
   const ic=$('dt-ic');ic.innerHTML=glyph(i.k,26);ic.style.color=i.c;ic.style.background=`color-mix(in srgb, ${i.c} 15%, var(--surface))`;
   $('dt-t').textContent=i.t;$('dt-s').textContent=i.s;$('dt-w').textContent=i.w;
+  if(i.cm){const ok=fits(i.cm/100);$('dt-s').textContent=i.s+(ok?` · fits your ${state.width} cm chair`:` · too narrow for your ${state.width} cm chair`)}
   const v=i.venue;
   if(v){$('dt-t').insertAdjacentHTML('beforeend','<span class="spon">Sponsored</span>');
     $('dt-facts').innerHTML=v.facts.map(([k,t])=>`<span class="fact">${glyph(k,15,2.8)}${t}</span>`).join('');
@@ -757,29 +790,66 @@ $('dt-clear').onclick=()=>{const p=dtPin,i=p.info;p.g.style.opacity=.35;i.w='Mar
 $('liftchip').onclick=()=>P.lift&&openDetail(P.lift);
 
 /* ---------- report ---------- */
-const TYPES=[['block','Blocked pavement'],['works','Roadworks'],['kerb','No dropped kerb'],['car','Car on pavement'],['lift','Lift out'],['rough','Rough surface'],['slope','Too steep'],['narrow','Narrow pavement'],['xslope','Sideways slope']];
+const TYPES=[['block','Blocked pavement'],['bike','Bike or e-scooter'],['car','Car on pavement'],['kerb','No dropped kerb'],['works','Roadworks'],['lift','Lift out'],['rough','Rough surface'],['narrow','Narrow pavement'],['crowd','Very crowded']];
+// spoken words -> report type, checked in order
+const SAYS=[['bike',/bike|scooter|lime|forest|dott|bicycle|cycle/],['car',/car|van|parked|vehicle/],['lift',/lift|elevator/],['works',/works|construction|scaffold|digging/],
+  ['kerb',/kerb|curb/],['crowd',/crowd|busy|people|queue/],['narrow',/narrow|tight|squeeze/],['rough',/rough|cobble|paving|pothole|crack|uneven/],['block',/block|bin|sign|board|in the way|obstruct/]];
 let pending=null;
 function openReport(){
   if(!$('detail').hidden)closeDetail();
-  $('rep-title').textContent="What's in the way?";show('rgrid',1);show('photo-step',0);
+  $('rep-title').textContent="What's in the way?";show('rgrid',1);show('photo-step',0);show('mic',1);resetMic();
   $('rgrid').innerHTML='';
   for(const [k,label] of TYPES){
     const b=document.createElement('button');b.className='rt-tile';
     b.innerHTML=`<span class="ic">${glyph(k)}</span>${label}`;
-    b.onclick=()=>{if(k==='car'){pending=[k,label];$('rep-title').textContent='Car on pavement';show('rgrid',0);show('photo-step',1);return}b.classList.add('sent');send(k,label)};
+    b.dataset.k=k;b.onclick=()=>pick(k,label,b);
     $('rgrid').appendChild(b);
   }
   show('scrim',1);show('report',1);
 }
-function closeReport(){show('scrim',0);show('report',0)}
+function pick(k,label,b){
+  if(k==='car'){pending=[k,label];$('rep-title').textContent='Car on pavement';show('rgrid',0);show('mic',0);show('photo-step',1);return}
+  b&&b.classList.add('sent');send(k,label);
+}
+function closeReport(){stopMic();show('scrim',0);show('report',0)}
+/* voice report: real speech recognition where the browser has it, otherwise a scripted demo phrase */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+let rec=null,micTimer=null;
+const DEMO_SAY='There are hire bikes lying across the pavement';
+function resetMic(){$('mic').classList.remove('on');$('mic-t').textContent='Say it'}
+function stopMic(){clearTimeout(micTimer);if(rec){try{rec.abort()}catch(e){}rec=null}}
+function heard(text){
+  stopMic();$('mic').classList.remove('on');
+  const t=text.toLowerCase(), hit=SAYS.find(([,re])=>re.test(t));
+  $('mic-t').innerHTML=`<span class="heard">“${text}”</span>`;
+  if(!hit){toast('Pick one below');return}
+  const k=hit[0],label=TYPES.find(x=>x[0]===k)[1];
+  say(label+'. Sent.',true);
+  setTimeout(()=>pick(k,label,document.querySelector(`.rt-tile[data-k="${k}"]`)),500);
+}
+$('mic').onclick=()=>{
+  if($('mic').classList.contains('on')){stopMic();resetMic();return}
+  if(canSpeak)speechSynthesis.cancel();
+  $('mic').classList.add('on');$('mic-t').textContent='Listening…';
+  const fallback=()=>{micTimer=setTimeout(()=>heard(DEMO_SAY),1600)};
+  if(!SR)return fallback();
+  try{
+    rec=new SR();rec.lang='en-GB';rec.interimResults=false;rec.maxAlternatives=1;
+    let got=false;
+    rec.onresult=e=>{got=true;heard(e.results[0][0].transcript)};
+    rec.onerror=()=>{if(!got){rec=null;fallback()}};
+    rec.onend=()=>{if(!got&&rec){rec=null;fallback()}};
+    rec.start();
+  }catch(e){rec=null;fallback()}
+};
 function send(k,label,photo){
   state.reports++;
   const p=state.nav?[me.x,me.y]:[cam.x,cam.y];
-  const col=['kerb','rough','slope','narrow','xslope'].includes(k)?'var(--warn)':'var(--bad)';
+  const col=['kerb','rough','slope','narrow','xslope','crowd'].includes(k)?'var(--warn)':'var(--bad)';
   hazPin(p[0]+14,p[1]-14,k,col,{t:label,s:'Reported by you',w:'Just now',issue:true},true);
   addFeed(label,'Just now'+(photo?' · photo':''),'new','Sent',k,true);
   $('rep-count').textContent=12+state.reports;
-  setTimeout(closeReport,300);toast('Sent to Westminster Council');
+  setTimeout(closeReport,300);toast(k==='bike'?'Sent to the bike operator':k==='crowd'?'Added to the live crowd map':'Sent to Westminster Council');
 }
 $('plate').onchange=()=>pending&&send(...pending,true);
 $('skip-photo').onclick=()=>pending&&send(...pending,false);
@@ -803,17 +873,26 @@ $('sense').onclick=()=>{state.sensing=!state.sensing;$('sense').setAttribute('ar
 setInterval(()=>{if(state.sensing&&state.nav){const k=$('kerbs');k.textContent=+k.textContent+1}},2500);
 
 /* ---------- profile ---------- */
-const FIELDS=[['kerb',' cm'],['slope','%'],['range',' km']];
+const FIELDS=[['kerb',' cm'],['slope','%'],['range',' km'],['width',' cm']];
 for(const [id,u] of FIELDS)$(id).oninput=e=>{state[id]=+e.target.value;$(id+'-o').textContent=fmt(e.target.value)+u;renderRoutes()};
+function syncFields(){FIELDS.forEach(([id,u])=>{$(id).value=state[id];$(id+'-o').textContent=fmt(state[id])+u})}
+function setDrive(v){
+  state.drive=v;Object.assign(state,DRIVE[v]);
+  [...$('drive').children].forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===v));
+  syncFields();renderRoutes();
+}
 function setMode(m){
   const pr=PRESET[m];state.mode=m;
-  Object.assign(state,{kerb:pr.kerb,slope:pr.slope,range:pr.range,speed:pr.speed,avoid:{...pr.avoid}});
+  Object.assign(state,{kerb:pr.kerb,slope:pr.slope,range:pr.range,speed:pr.speed,width:pr.width,avoid:{...pr.avoid}});
+  show('drive',m==='wheelchair');$('width-l').textContent=WIDTH_L[m];
+  if(m==='wheelchair')Object.assign(state,DRIVE[state.drive]),[...$('drive').children].forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===state.drive));
   [...$('mode').children].forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===m));
   FIELDS.forEach(([id,u])=>{$(id).value=state[id];$(id+'-o').textContent=fmt(state[id])+u});
   document.querySelectorAll('#avoid input').forEach(c=>{c.checked=!!state.avoid[c.dataset.k];c.disabled=pr.lock.includes(c.dataset.k)});
   renderRoutes();
 }
 $('mode').onclick=e=>{const b=e.target.closest('button');if(b)setMode(b.dataset.v)};
+$('drive').onclick=e=>{const b=e.target.closest('button');if(b)setDrive(b.dataset.v)};
 $('avoid').onchange=e=>{const c=e.target;if(c.dataset.k){state.avoid[c.dataset.k]=c.checked;renderRoutes()}};
 
 /* ---------- tabs ---------- */
